@@ -77,7 +77,8 @@ Gmailr.init(function(G) {
 
     G.observe(Gmailr.EVENT_VIEW_THREAD, function(threadId) {
         
-		console.log('sender(s)', G.threadEmails());
+		console.log('sender(s): ', G.threadSender());
+		console.log('subject: ', G.threadSubject());
 		status('Switched to thread with ID '+ threadId);
     });
 
