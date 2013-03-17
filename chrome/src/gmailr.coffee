@@ -253,6 +253,7 @@ Copyright 2012, James Yu, Joscha Feth
     Gmailr::threadSender = (includeMe) ->
       from = []
       fromSelector = []
+      includeMe = false  unless includeMe?
       @intercept()
       fromSelector.push "span.gD"
       fromSelector.push "[email!='" + @emailAddress() + "']"  if includeMe
