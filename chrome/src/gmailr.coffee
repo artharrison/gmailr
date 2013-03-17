@@ -246,29 +246,24 @@ Copyright 2012, James Yu, Joscha Feth
       el = @elements.canvas.find selectors.join ','
       el.first().html()
 	  
-    #
-    #    Returns a list of emails/names from the current thread.
-    #    0 = don't include the account owners e-mail
-    #    1 = include owner e-mail
-    #    
+    ###
+    Returns a list of emails/names from the current thread.
+    ###    
+
     Gmailr::threadSender = (includeMe) ->
-      from = undefined
-      fromSelector = undefined
-      fromSelector = ""
-      from = ""
+      from = []
+      fromSelector = []
       @intercept()
-      fromSelector = "span.gD[email"
-      fromSelector += "!='" + @emailAddress() + "'"  if includeMe
-      fromSelector += "]"
-      @elements.canvas.find(fromSelector).each ->
-        email = undefined
-        name = undefined
+      fromSelector.push "span.gD"
+      fromSelector.push "[email!='" + @emailAddress() + "']"  if includeMe
+      @elements.canvas.find(fromSelector.join("")).each ->
+        email = ""
+        name = ""
         email = $(this).attr("email")
         name = $(this).contents()[0].textContent
-        from += ", "  if from isnt ""
-        from += "\"" + name + "\" " + email
+        from.push '"' + name + '" ' + email
 
-      @toEmailArray from
+      @toEmailArray from.join()
 
 
     ###
