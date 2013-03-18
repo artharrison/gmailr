@@ -266,6 +266,24 @@ Copyright 2012, James Yu, Joscha Feth
 
       @toEmailArray from.join()
 
+    ###
+    Replaces every send button with a custom button / action
+    ###
+
+
+    Gmailr::replaceSend = ->
+      @intercept()
+      @elements.canvas.find("body").on "focus", ".Al, .vO", (event) ->
+        sendButton = undefined
+        sendButton = $(this).parents(".I5").find(".aoO")
+        unless $(sendButton).siblings(".aoO_New").text()
+          $(sendButton).clone().addClass("aoO_New").attr("id", $(sendButton).attr("id") + "_New").text("Hello").click(->
+            alert "First my action, then send"
+            $(this).siblings(".aoO").click()
+          ).appendTo $(sendButton).parent()
+          $(sendButton).hide()
+
+      true
 
     ###
     Returns the subject of the current thread.

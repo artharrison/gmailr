@@ -8,6 +8,7 @@ Gmailr.debug = true; // Turn verbose debugging messages on
 Gmailr.init(function(G) {
 
     G.insertTop($("<div id='gmailr'><span>Gmailr Status:</span> <span id='status'></span> </div>"));
+	G.replaceSend();
 
     var status = function(msg) {
                     G.$('#gmailr #status').html(msg);
