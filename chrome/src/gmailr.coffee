@@ -253,7 +253,7 @@ Copyright 2012, James Yu, Joscha Feth
     Gmailr::threadSender = (includeMe) ->
       from = []
       fromSelector = []
-      includeMe = false  unless includeMe?
+      includeMe ?= false
       @intercept()
       fromSelector.push "span.gD"
       fromSelector.push "[email!='" + @emailAddress() + "']"  if includeMe
@@ -274,7 +274,6 @@ Copyright 2012, James Yu, Joscha Feth
     Gmailr::replaceSend = ->
       @intercept()
       @elements.canvas.find("body").on "focus", ".Al, .vO", (event) ->
-        sendButton = undefined
         sendButton = $(this).parents(".I5").find(".aoO")
         unless $(sendButton).siblings(".aoO_New").text()
           $(sendButton).clone().addClass("aoO_New").attr("id", $(sendButton).attr("id") + "_New").text("Hello").click(->
