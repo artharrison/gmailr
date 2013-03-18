@@ -271,18 +271,35 @@ Copyright 2012, James Yu, Joscha Feth
     ###
 
 
+    Gmailr::getSendButton = ->
+      parentSelector = ""
+      buttonSelector = ""
+      if $(this).parents(".I5").find(".aoO").text()
+        ###
+        new compose
+        ###
+        parentSelector = ".I5"
+        buttonSelector = ".aoO"
+      else
+        ###
+        old compose
+        ###
+        parentSelector = ".nH"
+        buttonSelector = ".Bq.nS"
+      sendButton = $(this).parents(parentSelector).find(buttonSelector + ":not('.aoO_New')")
+      $(sendButton).each ->
+        unless $(this).siblings(".aoO_New").text()
+          $(this).clone().addClass("aoO_New").attr("id", $(this).attr("id") + "_New").text("Hello").click(->
+            alert "First my action, then send"
+            $(this).siblings(buttonSelector).click()
+            console.log $(this).siblings(buttonSelector)
+          ).insertAfter $(this)
+        $(this).hide()
+
+
     Gmailr::replaceSend = ->
       @intercept()
-      @elements.canvas.find("body").on "focus", ".Al, .vO", (event) ->
-        sendButton = $(this).parents(".I5").find(".aoO")
-        unless $(sendButton).siblings(".aoO_New").text()
-          $(sendButton).clone().addClass("aoO_New").attr("id", $(sendButton).attr("id") + "_New").text("Hello").click(->
-            alert "First my action, then send"
-            $(this).siblings(".aoO").click()
-          ).appendTo $(sendButton).parent()
-          $(sendButton).hide()
-
-      true
+      @elements.canvas.find("body").on("focus", ".Al, .vO, .dK.nr, .Am.Al.editable", @getSendButton).on "mouseover", ".Ar.Au", @getSendButton
 
     ###
     Returns the subject of the current thread.
@@ -404,7 +421,7 @@ Copyright 2012, James Yu, Joscha Feth
             unless urlParams.th
               @notify @EVENT_REFRESH_INBOX
             else
-              dbg "User views a thred"
+              dbg "User views a thread"
               @notify @EVENT_VIEW_THREAD, urlParams.th
 
           # Archiving
