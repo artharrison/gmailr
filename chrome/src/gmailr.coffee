@@ -212,8 +212,9 @@ Copyright 2012, James Yu, Joscha Feth
         for listener in @observers[type]
           listener?.apply? @, args
       if type isnt @EVENT_ANY
-        for listener in @observers[@EVENT_ANY]
-          listener?.call? @, type, args
+        if @observers[@EVENT_ANY]
+          for listener in @observers[@EVENT_ANY]
+            listener?.call? @, type, args
       return
 
     
@@ -298,8 +299,10 @@ Copyright 2012, James Yu, Joscha Feth
 
           $(this).clone().addClass("aoO_New").attr("id", $(this).attr("id") + "_New").click(->
             if newCompose
+              $(this).parents(parentSelector).find(".Al").append " - Gmailr"
               $(this).siblings(buttonSelector).click()
             else
+              $(this).parents(parentSelector).find(".editable").contents().find(".editable").append " - Gmailr"
               a = document.getElementById($(this).siblings(buttonSelector).attr("id"))
               b = document.createEvent("MouseEvents")
               b.initMouseEvent "mousedown", not 0, not 0, window, 0, 0, 0, 0, 0, not 1, not 1, not 1, not 1, 0, null
