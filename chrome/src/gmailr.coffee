@@ -272,34 +272,49 @@ Copyright 2012, James Yu, Joscha Feth
 
 
     Gmailr::getSendButton = ->
+      newCompose = true
       parentSelector = ""
       buttonSelector = ""
       if $(this).parents(".I5").find(".aoO").text()
-        ###
-        new compose
-        ###
         parentSelector = ".I5"
         buttonSelector = ".aoO"
       else
-        ###
-        old compose
-        ###
+        newCompose = false
         parentSelector = ".nH"
         buttonSelector = ".Bq.nS"
       sendButton = $(this).parents(parentSelector).find(buttonSelector + ":not('.aoO_New')")
       $(sendButton).each ->
         unless $(this).siblings(".aoO_New").text()
-          $(this).clone().addClass("aoO_New").attr("id", $(this).attr("id") + "_New").text("Hello").click(->
-            alert "First my action, then send"
-            $(this).siblings(buttonSelector).click()
-            console.log $(this).siblings(buttonSelector)
+
+          ###
+          My custom actions for the "Send button" will go here
+          Someone else will have to figure out how to change setting by paramaters
+          For example, it would be great if from main.js you could specify:
+           - Whether or not the original Send button should be hidden
+           - What the new button's text should be
+           - the name of a function to execute before clicking send
+           - etc.
+          ###			
+
+          $(this).clone().addClass("aoO_New").attr("id", $(this).attr("id") + "_New").click(->
+            if newCompose
+              $(this).siblings(buttonSelector).click()
+            else
+              a = document.getElementById($(this).siblings(buttonSelector).attr("id"))
+              b = document.createEvent("MouseEvents")
+              b.initMouseEvent "mousedown", not 0, not 0, window, 0, 0, 0, 0, 0, not 1, not 1, not 1, not 1, 0, null
+              a.dispatchEvent b
+              b = document.createEvent("MouseEvents")
+              b.initMouseEvent "mouseup", not 0, not 0, window, 0, 0, 0, 0, 0, not 1, not 1, not 1, not 1, 0, null
+              a.dispatchEvent b
           ).insertAfter $(this)
         $(this).hide()
 
 
     Gmailr::replaceSend = ->
       @intercept()
-      @elements.canvas.find("body").on("focus", ".Al, .vO, .dK.nr, .Am.Al.editable", @getSendButton).on "mouseover", ".Ar.Au", @getSendButton
+      @elements.canvas.find("body").on("focus", ".Al, .vO, .dK.nr, .Am.Al.editable", @getSendButton).on "focusout", ".aaz", @getSendButton
+
 
     ###
     Returns the subject of the current thread.
